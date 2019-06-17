@@ -44,7 +44,7 @@ log$ad_title <-
 # retrieve the blue boxes from willhaben.
 # those boxes are currently:
 #  +) Objektinformation
-#  +) Ausstattung und Freifl�che
+#  +) Ausstattung und Freifläche
 #  +) Energieausweis
 #  +) Objektbeschreibung
 #  +) Lage
@@ -54,7 +54,7 @@ log$ad_title <-
 all_boxes <- single_flat %>% html_nodes("[class='box-block ']") # class with exactly this name!
 
 
-# Objektinformation and Ausstattung und Freifl�che are (always?!) double-columned
+# Objektinformation and Ausstattung und Freifläche are (always?!) double-columned
 # The bold text is extracted with:
 bold_text <- 
   all_boxes %>% 
@@ -72,3 +72,10 @@ simple_text <-
 
 # add the information extracted previously to the log 
 log[, (bold_text) := as.list(simple_text)]
+
+# save the living area as integer without dimensions
+log[, Wohnfläche_raw := Wohnfläche %>% str_extract("\\d+") %>% as.integer()]
+# save the price without Euro-Symbol and thousand-separators
+log[, price_raw := price %>% str_extract("\\d{1,3}(\\.\\d{3})*") %>% str_replace_all("\\.", "") %>% as.numeric()]
+# calculate the price per square meter
+log[, `price/m²`:= price_raw / Wohnfläche_raw]
