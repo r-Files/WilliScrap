@@ -1,11 +1,11 @@
-
-# Install packages required for the analysis.
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(data.table, rvest, dplyr, stringr)
-
-test_link <- "https://www.willhaben.at/iad/immobilien/d/eigentumswohnung/wien/wien-1010-innere-stadt/prachtvolle-altbauwohnung-mit-blick-auf-das-naturhistorische-museum-in-1010-wien-zu-kaufen-314009082/?counterId=112"
-
-test_result <- single_scrap(test)
+# 
+# # Install packages required for the analysis.
+# if (!require("pacman")) install.packages("pacman")
+# pacman::p_load(data.table, rvest, dplyr, stringr)
+# 
+# test_link <- "https://www.willhaben.at/iad/immobilien/d/eigentumswohnung/wien/wien-1010-innere-stadt/prachtvolle-altbauwohnung-mit-blick-auf-das-naturhistorische-museum-in-1010-wien-zu-kaufen-314009082/?counterId=112"
+# 
+# test_result <- single_scrap(test_link)
 
 single_scrap <- function(link){
   
@@ -80,9 +80,9 @@ single_scrap <- function(link){
   
   
   # save the living area as integer without dimensions
-  log[, WohnflÃ¤che_raw := WohnflÃ¤che %>% str_extract("\\d+") %>% as.integer()]
+  log[, Wohnfläche_raw := Wohnfläche %>% str_extract("\\d+") %>% as.integer()]
   # save the price without Euro-Symbol and thousand-separators
   log[, price_raw := price %>% str_extract("\\d{1,3}(\\.\\d{3})*") %>% str_replace_all("\\.", "") %>% as.numeric()]
   # calculate the price per square meter
-  log[, `price/mÂ²`:= price_raw / WohnflÃ¤che_raw]
+  log[, `price_per_square_meter`:= price_raw / Wohnfläche_raw]
 }

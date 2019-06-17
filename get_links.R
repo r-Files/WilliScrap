@@ -1,8 +1,8 @@
-# Install packages required for the analysis.
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(data.table, rvest, dplyr, stringr)
-
-test_entry <- "https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1010-innere-stadt/"
+# # Install packages required for the analysis.
+# if (!require("pacman")) install.packages("pacman")
+# pacman::p_load(data.table, rvest, dplyr, stringr)
+# 
+# test_entry <- "https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1010-innere-stadt/"
 
 get_links <- function(entry_point){
   
@@ -36,9 +36,9 @@ get_links <- function(entry_point){
     }
   }
   
+  ad_list[, links := paste0("https://www.willhaben.at", links)]
   return(ad_list)
+
 }
 
-
-aaa <- get_links(test_entry)
-
+# aaa <- get_links(test_entry)
