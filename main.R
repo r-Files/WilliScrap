@@ -1,6 +1,6 @@
 # Install packages required for the analysis.
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(data.table, rvest, dplyr, stringr)
+pacman::p_load(data.table, rvest, dplyr, stringr, jsonlite)
 
 source("get_links.R")
 source("single_scrap.R")
