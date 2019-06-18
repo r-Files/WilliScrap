@@ -9,7 +9,7 @@
 
 single_scrap <- function(link){
   
-  single_flat <- read_html(link)
+  single_flat <- read_html(link, encoding = "latin1")
   
   log <- data.table()
   
