@@ -34,5 +34,3 @@ get_links <- function(entry_point){
   return(ad_list)
 
 }
-
-# aaa <- get_links(test_entry)

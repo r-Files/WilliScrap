@@ -86,5 +86,3 @@ single_scrap <- function(link){
   # calculate the price per square meter
   log[, price_per_square_meter:= price_raw / Wohnfläche_raw]
 }
-
-# test_result <- single_scrap(test_link)
