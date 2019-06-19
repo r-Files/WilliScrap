@@ -1,9 +1,9 @@
 
 # Install packages required for the analysis.
-if (!require("pacman")) install.packages("pacman")
-pacman::p_load(data.table, rvest, dplyr, stringr)
+# if (!require("pacman")) install.packages("pacman")
+# pacman::p_load(data.table, rvest, dplyr, stringr)
 
-test_link <- "https://www.willhaben.at/iad/immobilien/d/eigentumswohnung/wien/wien-1010-innere-stadt/inner-city-bestlage-naehe-kaerntnerstrasse-dachgeschoss-zum-umbau-272920887/"
+# test_link <- "https://www.willhaben.at/iad/immobilien/d/eigentumswohnung/wien/wien-1010-innere-stadt/inner-city-bestlage-naehe-kaerntnerstrasse-dachgeschoss-zum-umbau-272920887/"
 
 single_scrap <- function(link){
   
@@ -94,4 +94,4 @@ single_scrap <- function(link){
   log[, price_per_square_meter:= price_raw / Wohnfläche_raw]
 }
 
-test_result <- single_scrap(test_link)
+# test_result <- single_scrap(test_link)
