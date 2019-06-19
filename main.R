@@ -33,8 +33,8 @@ for(number in 1:10){#nrow(all_links)){
 
   #merge add to existing ones if new or update last seen
   if(!(one_ad[["id"]] %in% result[["id"]])){
-    one_ad$firstSeen <- Sys.Date()
-    one_ad$lastSeen <- Sys.Date()
+    one_ad$firstSeen <- format(Sys.Date(), format="%Y-%m-%d")
+    one_ad$lastSeen <- format(Sys.Date(), format="%Y-%m-%d")
     result <- rbind(one_ad, result, fill=TRUE)
 
     # define id as key
@@ -42,7 +42,7 @@ for(number in 1:10){#nrow(all_links)){
   }
   else{
     print('Not new')
-    result[one_ad[["id"]]][['lastSeen']] <- Sys.Date()
+    result[one_ad[["id"]]][['lastSeen']] <- format(Sys.Date(), format="%Y-%m-%d")
   }
 
   # sleep 1-10 times longer than response_delay
