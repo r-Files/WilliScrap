@@ -1,11 +1,9 @@
-# 
-# # Install packages required for the analysis.
-# if (!require("pacman")) install.packages("pacman")
-# pacman::p_load(data.table, rvest, dplyr, stringr)
-# 
-# test_link <- "https://www.willhaben.at/iad/immobilien/d/eigentumswohnung/wien/wien-1010-innere-stadt/prachtvolle-altbauwohnung-mit-blick-auf-das-naturhistorische-museum-in-1010-wien-zu-kaufen-314009082/?counterId=112"
-# 
-# test_result <- single_scrap(test_link)
+
+# Install packages required for the analysis.
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(data.table, rvest, dplyr, stringr)
+
+test_link <- "https://www.willhaben.at/iad/immobilien/d/eigentumswohnung/wien/wien-1010-innere-stadt/inner-city-bestlage-naehe-kaerntnerstrasse-dachgeschoss-zum-umbau-272920887/"
 
 single_scrap <- function(link){
   
@@ -49,7 +47,7 @@ single_scrap <- function(link){
   # retrieve the blue boxes from willhaben.
   # those boxes are currently:
   #  +) Objektinformation
-  #  +) Ausstattung und Freifläche
+  #  +) Ausstattung und FreiflÃ¤che
   #  +) Energieausweis
   #  +) Objektbeschreibung
   #  +) Lage
@@ -59,7 +57,7 @@ single_scrap <- function(link){
   all_boxes <- single_flat %>% html_nodes("[class='box-block ']") # class with exactly this name!
   
   
-  # Objektinformation and Ausstattung und Freifläche are (always?!) double-columned
+  # Objektinformation and Ausstattung und FreiflÃ¤che are (always?!) double-columned
   # The bold text is extracted with:
   bold_text <- 
     all_boxes %>% 
@@ -77,12 +75,23 @@ single_scrap <- function(link){
   
   # add the information extracted previously to the log 
   log[, (bold_text) := as.list(simple_text)]
+
+  # In some rare cases the ad doesn't have a living area provided so we first
+  # check if this information is available and then extract the living area as
+  # integer without dimensions
+  if(!is.null(log$Wohnfläche))
+    log[, Wohnfläche_raw := Wohnfläche %>% str_extract("\\d+") %>% as.integer()]
+  else
+    log[, Wohnfläche_raw := NA_integer_]
   
-  
-  # save the living area as integer without dimensions
-  log[, Wohnfl�che_raw := Wohnfl�che %>% str_extract("\\d+") %>% as.integer()]
-  # save the price without Euro-Symbol and thousand-separators
-  log[, price_raw := price %>% str_extract("\\d{1,3}(\\.\\d{3})*") %>% str_replace_all("\\.", "") %>% as.numeric()]
+  # extract the price without thousand separator and euro symbol
+  log[, price_raw := price %>% 
+                      str_extract("\\d{1,3}(\\.\\d{3})*") %>%
+                      str_replace_all("\\.", "") %>%
+                      as.numeric()]
+
   # calculate the price per square meter
-  log[, `price_per_square_meter`:= price_raw / Wohnfl�che_raw]
+  log[, price_per_square_meter:= price_raw / Wohnfläche_raw]
 }
+
+test_result <- single_scrap(test_link)
