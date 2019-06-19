@@ -5,24 +5,35 @@ pacman::p_load(data.table, rvest, dplyr, stringr, jsonlite, httr)
 source("get_links.R", encoding='UTF-8')
 source("single_scrap.R", encoding='UTF-8')
 
-result <- data.table()
+#result <- data.table()
 test_link <- "https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1010-innere-stadt/"
 
 all_links <- get_links(test_link)
 
-for(number in 1:nrow(all_links)){
+for(number in 1:20){#nrow(all_links)){
   # Fetch one ad and measure the time
   t0 <- Sys.time()
-  print(all_links$links[[number]])
+  cat(number, all_links$links[[number]],'\n')
   one_ad <- single_scrap(all_links$links[[number]])
   t1 <- Sys.time()
 
-  #merge add to existing ones
-  result <- rbind(result,one_ad, fill=TRUE)
+  #merge add to existing ones if new or update last seen
+  if(!(one_ad[["id"]] %in% result[["id"]])){
+    one_ad$firstSeen <- Sys.Date()
+    one_ad$lastSeen <- Sys.Date()
+    result <- rbind(one_ad, result, fill=TRUE)
 
-  # sleep 10 times longer than response_delay
+    # define id as key
+    setkey(result,'id')
+  }
+  else{
+    print('Not new')
+    result[one_ad[["id"]], 'lastSeen'] <- Sys.Date()
+  }
+
+  # sleep 1-10 times longer than response_delay
   response_delay <- as.numeric(t1-t0)
-  Sys.sleep(10*response_delay)
+  Sys.sleep(runif(1, min = 1, max = 10)*response_delay)
 }
 one_ad <- single_scrap(all_links$links[[1]])
 

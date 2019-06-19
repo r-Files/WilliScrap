@@ -1,17 +1,11 @@
-# # Install packages required for the analysis.
-# if (!require("pacman")) install.packages("pacman")
-# pacman::p_load(data.table, rvest, dplyr, stringr)
-# 
-# test_entry <- "https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1010-innere-stadt/"
-
 get_links <- function(entry_point){
-  
+
   pages <- data.table(link = entry_point)
-  
+
   ad_list <- data.table(links = character())
-  
+
   page_content <- read_html(entry_point)
-  
+
   repeat
   {
     # wait
@@ -23,11 +17,11 @@ get_links <- function(entry_point){
       as.data.table() %>%
       setnames("links") %>%
       rbind(ad_list)
-    
+
     next_page <- page_content %>%
-      html_nodes("link[rel='next']") %>% 
+      html_nodes("link[rel='next']") %>%
       html_attr("href")
-    
+
     if(identical(next_page, character(0)))
     {
       break
@@ -35,7 +29,7 @@ get_links <- function(entry_point){
       page_content <- next_page %>% {paste0("https:",.)} %>% read_html()
     }
   }
-  
+
   ad_list[, links := paste0("https://www.willhaben.at", links)]
   return(ad_list)
 
