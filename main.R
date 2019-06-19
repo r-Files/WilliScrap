@@ -5,7 +5,7 @@ pacman::p_load(data.table, rvest, dplyr, stringr, jsonlite, httr)
 source("get_links.R", encoding='UTF-8')
 source("single_scrap.R", encoding='UTF-8')
 
-#result <- data.table()
+result <- data.table()
 test_link <- "https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1010-innere-stadt/"
 
 all_links <- get_links(test_link)
