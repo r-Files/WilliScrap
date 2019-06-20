@@ -18,7 +18,8 @@ single_scrap <- function(link){
     html_nodes("span[id='advert-info-whCode']") %>%
     html_text() %>%
     unique() %>%
-    str_extract(pattern = "\\d+")
+    str_extract(pattern = "\\d+") %>%
+    as.integer()
 
   # get last modified:
   log$last_modified <-
