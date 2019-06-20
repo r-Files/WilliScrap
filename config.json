@@ -1,0 +1,36 @@
+{
+	"willhaben": {
+		"pages": [
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1010-innere-stadt/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1020-leopoldstadt/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1030-landstrasse/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1040-wieden/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1050-margareten/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1060-mariahilf/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1070-neubau/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1080-josefstadt/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1090-alsergrund/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1100-favoriten/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1110-simmering/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1120-meidling/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1130-hietzing/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1140-penzing/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1150-rudolfsheim-fuenfhaus/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1160-ottakring/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1170-hernals/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1180-waehring/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1190-doebling/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1200-brigittenau/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1210-floridsdorf/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1220-donaustadt/",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1230-liesing/"
+		]
+	},
+	"gmail": {
+		"account": "immo.scraper@gmail.com",
+		"password": "blabla"
+	},
+	"config": {
+		"scrapfile": "flats.csv"
+	}
+}

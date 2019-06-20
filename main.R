@@ -1,30 +1,40 @@
 # Install packages required for the analysis.
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(data.table, rvest, dplyr, stringr, jsonlite, httr)
+pacman::p_load(data.table, rvest, dplyr, stringr, jsonlite, httr, funr, configr)
 
+# set working dir automatically
+setwd(get_script_path()) 
 source("get_links.R", encoding='UTF-8')
 source("single_scrap.R", encoding='UTF-8')
 
 
-# Configuration
-scrapfile <- 'flats.csv'
-test_link <- "https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1010-innere-stadt/"
+# Read configuration
+configfile <- "config.json"
+if(file.exists(configfile))
+{
+  if(is.json.file(configfile))
+  {
+    configuration <- read.config(file = configfile)
+  }
+} else {
+  print("No config file found!")
+}
 
 
 # read existing scraps into results
-if(file.exists(scrapfile))
+if(file.exists(configuration[["config"]][["scrapfile"]]))
 {
-  result <- fread(scrapfile, colClasses = 'character', header=TRUE, key='id', encoding='UTF-8')
+  result <- fread(configuration[["config"]][["scrapfile"]], header=TRUE, key='id', encoding='UTF-8')
   setkey(result,'id')
 } else {
   result <- data.table()
 }
 
 # fetch all links
-all_links <- get_links(test_link)
+all_links <- get_links(configuration[["willhaben"]][["pages"]][[1]])
 
 # fetch ads to all links
-for(number in 1:10){#nrow(all_links)){
+for(number in 1:20){#nrow(all_links)){
   # Fetch one ad and measure the time
   t0 <- Sys.time()
   cat(number,'/',nrow(all_links),all_links$links[[number]],'\n')
@@ -51,4 +61,4 @@ for(number in 1:10){#nrow(all_links)){
 }
 
 # Save scrap to csv
-write.csv(result, scrapfile, quote=TRUE, row.names=FALSE, fileEncoding ='UTF-8')
+write.csv(result, configuration[["config"]][["scrapfile"]], row.names=FALSE, fileEncoding ='UTF-8')
