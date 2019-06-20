@@ -9,7 +9,7 @@ get_links <- function(entry_point){
   repeat
   {
     # wait
-    Sys.sleep(3)
+    Sys.sleep(1)
     ad_list <- page_content %>%
       html_nodes("[class='content-section isRealestate']") %>%
       html_nodes("a") %>%
