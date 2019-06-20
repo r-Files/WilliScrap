@@ -37,6 +37,16 @@ single_scrap <- function(link){
     html_text() %>%
     str_extract("^(.*?),") %>%
     str_replace(",", "")
+  
+  # get district
+  log$district <-
+    single_flat %>%
+    html_text() %>%
+    unique() %>%
+    str_extract(pattern = "(\\d+)\\. Bezirk") %>%
+    str_extract(pattern = "((\\d+))") %>%
+    as.numeric()
+  
 
   # retrieve the blue boxes from willhaben.
   # those boxes are currently:
