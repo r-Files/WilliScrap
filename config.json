@@ -26,10 +26,6 @@
 			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1230-liesing/?rows=100"
 		]
 	},
-	"gmail": {
-		"account": "immo.scraper@gmail.com",
-		"password": "blabla"
-	},
 	"config": {
 		"scrapfile": "flats.csv"
 	}
