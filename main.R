@@ -31,10 +31,15 @@ if(file.exists(configuration[["config"]][["scrapfile"]]))
 }
 
 # fetch all links
-all_links <- get_links(configuration[["willhaben"]][["pages"]][[1]])
+all_links <- data.table()
+for(number in 1:length(configuration[["willhaben"]][["pages"]])){
+  dummy <- get_links(configuration[["willhaben"]][["pages"]][[number]])
+  all_links <- rbind(all_links,dummy)
+}
+
 
 # fetch ads to all links
-for(number in 1:20){#nrow(all_links)){
+for(number in 1:nrow(all_links)){
   # Fetch one ad and measure the time
   t0 <- Sys.time()
   cat(number,'/',nrow(all_links),all_links$links[[number]],'\n')
