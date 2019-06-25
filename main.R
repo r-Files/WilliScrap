@@ -3,7 +3,7 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load(data.table, rvest, dplyr, stringr, jsonlite, httr, funr, configr)
 
 # set working dir automatically
-setwd(get_script_path()) 
+setwd(get_script_path())
 source("get_links.R", encoding='UTF-8')
 source("single_scrap.R", encoding='UTF-8')
 
@@ -62,7 +62,7 @@ for(number in 1:nrow(all_links)){
 
   # sleep 1-10 times longer than response_delay
   response_delay <- as.numeric(t1-t0)
-  Sys.sleep(runif(1, min = 1, max = 10)*as.numeric(t1-t0))
+  Sys.sleep(runif(1, min = 1, max = 3)*as.numeric(t1-t0))
 }
 
 # Save scrap to csv
