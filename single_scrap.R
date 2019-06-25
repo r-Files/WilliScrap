@@ -1,5 +1,6 @@
-# if (!require("pacman")) install.packages("pacman")
-# pacman::p_load(data.table, rvest, dplyr, stringr, jsonlite, httr, funr, configr)
+single_scrap <- function(link){
+
+  single_flat <- read_html(link, encoding = "latin-1")
 
 single_scrap <- function(link){
   
@@ -43,7 +44,7 @@ single_scrap <- function(link){
     html_text() %>%
     str_extract("^(.*?),") %>%
     str_replace(",", "")
-  
+
   # get district
   log$district <-
     single_flat %>%
@@ -52,8 +53,7 @@ single_scrap <- function(link){
     str_extract(pattern = "(\\d+)\\. Bezirk") %>%
     str_extract(pattern = "((\\d+))") %>%
     as.numeric()
-  
-  
+
   # retrieve the blue boxes from willhaben.
   # those boxes are currently:
   #  +) Objektinformation
