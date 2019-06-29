@@ -50,6 +50,15 @@ single_scrap <- function(link){
     str_extract(pattern = "((\\d+))") %>%
     as.numeric()
 
+  # get additional price infos
+  log$additionalCost <-
+    single_flat %>%
+    html_nodes('div[class="box-block "]') %>%
+    html_text()%>%
+    str_subset("Preis - Detailinformation") %>%
+    sub("Preis - Detailinformation(.*)", "\\1", .) %>%
+    trimws()
+
   # retrieve the blue boxes from willhaben.
   # those boxes are currently:
   #  +) Objektinformation
