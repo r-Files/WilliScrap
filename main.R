@@ -1,9 +1,10 @@
 # Install packages required for the analysis.
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(data.table, rvest, dplyr, stringr, jsonlite, httr, funr, configr)
+pacman::p_load(data.table, rvest, dplyr, stringr, jsonlite, httr, funr, configr,
+               rstudioapi)
 
 # set working dir automatically
-setwd(get_script_path())
+setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 source("get_links.R", encoding='UTF-8')
 source("single_scrap.R", encoding='UTF-8')
 
@@ -22,21 +23,20 @@ if(file.exists(configfile))
 
 
 # read existing scraps into results
-if(file.exists(configuration[["config"]][["scrapfile"]]))
+if(file.exists(configuration$config$scrapfile))
 {
-  result <- fread(configuration[["config"]][["scrapfile"]], header=TRUE, key='id', encoding='UTF-8')
-  setkey(result,'id')
+  result <- fread(configuration$config$scrapfile,
+                  header = TRUE,
+                  key = 'id',
+                  encoding = 'UTF-8')
 } else {
   result <- data.table()
 }
 
-# fetch all links
-all_links <- data.table()
-for(number in 1:length(configuration[["willhaben"]][["pages"]])){
-  dummy <- get_links(configuration[["willhaben"]][["pages"]][[number]])
-  all_links <- rbind(all_links,dummy)
-}
 
+all_links <- lapply(configuration$willhaben$pages, function(x) {
+  get_links(x)
+}) %>% rbindlist()
 
 # fetch ads to all links
 for(number in 1:nrow(all_links)){
