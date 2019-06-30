@@ -50,14 +50,14 @@ single_scrap <- function(link){
     str_extract(pattern = "((\\d+))") %>%
     as.numeric()
 
-  # get additional price infos
-  log$additionalCost <-
-    single_flat %>%
-    html_nodes('div[class="box-block "]') %>%
-    html_text()%>%
-    str_subset("Preis - Detailinformation") %>%
-    sub("Preis - Detailinformation(.*)", "\\1", .) %>%
-    trimws()
+  # # get additional price infos
+  # log$additionalCost <-
+  #   single_flat %>%
+  #   html_nodes('[class="box-block "]') %>%
+  #   html_text()%>%
+  #   str_subset("Preis - Detailinformation") %>%
+  #   sub("Preis - Detailinformation(.*)", "\\1", .) %>%
+  #   trimws()
 
   # retrieve the blue boxes from willhaben.
   # those boxes are currently:
@@ -71,6 +71,21 @@ single_scrap <- function(link){
   #  +) Preis - Detailinformation
   all_boxes <- single_flat %>% html_nodes("[class='box-block ']") # class with exactly this name!
 
+  # from all boxes on the page we want to find that one with the heading "Preis - Detailinformation"
+  price_box_bool <- 
+    all_boxes %>% 
+    html_nodes(".box-heading") %>%
+    html_text() %>% 
+    str_replace_all("\\r|\\n", "") %>%
+    str_trim(side = "both") == "Preis - Detailinformation"
+  
+  # take the whole information from that box and save it into one column
+  log$additionalCost <-
+    all_boxes[price_box_bool] %>%
+    html_nodes(".box-body") %>%
+    html_text() %>%
+    str_replace_all("\\r|\\n", "") %>%
+    str_trim(side = "both")
 
   # Objektinformation and Ausstattung und FreiflÃ¤che are (always?!) double-columned
   # The bold text is extracted with:
@@ -107,5 +122,7 @@ single_scrap <- function(link){
   #   set(results, j = col, value = paste0("\"", results[[col]], "\""))
 }
 
-#test <- single_scrap("https://www.willhaben.at/iad/immobilien/d/eigentumswohnung/wien/wien-1010-innere-stadt/1300-wohnen-im-herzen-wiens-58528848/")
+# test_one <- single_scrap("https://www.willhaben.at/iad/immobilien/d/eigentumswohnung/wien/wien-1090-alsergrund/renovierte-altbauwohnung-am-guertel-286907111/")
+# test_two <- single_scrap("https://www.willhaben.at/iad/immobilien/d/eigentumswohnung/wien/wien-1090-alsergrund/althan-park-unvergleichliches-city-loft-263454481/")
 
+# rbind(test_one, test_two, fill = TRUE)
