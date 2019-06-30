@@ -30,7 +30,7 @@ get_links <- function(entry_point){
   ad_list[, links := paste0("https://www.willhaben.at", links)]
   # extract the id from the urls and save it as a separate column
   ad_list[, ad_id := links %>%
-            str_extract("-\\d{9}/$") %>% # find nine digit number at end of url
+            str_extract("-\\d{8,}/") %>% # find eight or more digit number at end of url
             str_replace_all("^.|.$", "")] # delete first and last character 
   
   ad_list[, district := links %>%
@@ -47,3 +47,4 @@ get_links <- function(entry_point){
 
 # test <- get_links("https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1080-josefstadt/?rows=100")
 
+  
