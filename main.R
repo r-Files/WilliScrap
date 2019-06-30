@@ -12,6 +12,9 @@ pacman::p_load(data.table,
                rstudioapi,
                styler)
 
+# make debugging easier
+verbose_flag <- FALSE
+
 # set working dir automatically
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 source("get_links.R", encoding = 'UTF-8')
@@ -48,6 +51,14 @@ if (file.exists(configuration$config$scrapfile))
 new_ads <- lapply(seq_along(configuration$willhaben$pages), function(i) {
   links_per_district <- get_links(configuration$willhaben$pages[i])
 
+  if (verbose_flag){
+    # add a row-count to the data.table
+    links_per_district[, ad_count := .I]
+    setcolorder(links_per_district, c("ad_count", "district", "ad_id", "links"))
+    links_per_district %>% fwrite(paste0("Links_for_district_", links_per_district$district[1], ".txt"))
+  }
+    
+  
   temp_data <- data.table()
 
   # fetch ads to all links
@@ -61,6 +72,10 @@ new_ads <- lapply(seq_along(configuration$willhaben$pages), function(i) {
       result[row_index, lastSeen := format(Sys.Date(), format = "%Y-%m-%d")]
       message <- "old ad"
     } else {
+
+      if (verbose_flag)
+        cat(links_per_district$links[[number]])
+      
       # Fetch one ad and measure the time
       t0 <- Sys.time()
       one_ad <- single_scrap(links_per_district$links[[number]])
