@@ -110,6 +110,16 @@ new_ads <- lapply(seq_along(configuration$willhaben$pages), function(i) {
   return(temp_data)
 })
 
+# write those ads which were scraped during an update into a separate file
+# which has a date in its name: scraped_YYYY_MM_DD.csv
+rbindlist(new_ads, fill = TRUE) %>% 
+  write.csv(
+    file = paste0("scraped_", Sys.Date(), ".csv"),
+    row.names = FALSE,
+    fileEncoding = 'UTF-8'
+  )
+
+# write the old and new scraped ads combined into a file
 rbindlist(new_ads, fill = TRUE) %>%
   rbind(result, fill = TRUE) %>%
   write.csv(
