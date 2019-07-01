@@ -34,24 +34,27 @@ if (file.exists(configfile))
 }
 
 
-# read existing scraps into results
-if (file.exists(configuration$config$scrapfile))
-{
-  result <- fread(
-    configuration$config$scrapfile,
-    header = TRUE,
-    key = 'id',
-    encoding = 'UTF-8'
-  )
-} else {
-  result <- data.table()
-}
+paste0("flats_", names(configuration$willhaben$pages)[1], ".csv") 
+paste0("flats_", names(configuration$willhaben$pages)[2], ".csv") 
 
 
 # loop through all given states: currently vienna and NOE
 for (state in 1:length(configuration$willhaben$pages)) {
   
-  #configuration$willhaben$pages[[state]]
+  file_name <- paste0("flats_", names(configuration$willhaben$pages)[state], ".csv")
+  
+  # read existing scraps into results
+  if (file.exists(file_name))
+  {
+    result <- fread(
+      file_name,
+      header = TRUE,
+      key = 'id',
+      encoding = 'UTF-8'
+    )
+  } else {
+    result <- data.table()
+  }
   
   
   # get all links
@@ -121,22 +124,24 @@ for (state in 1:length(configuration$willhaben$pages)) {
       }
       return(temp_data)
     })
+  
+  # write those ads which were scraped during an update into a separate file
+  # which has a date in its name: scraped_YYYY_MM_DD.csv
+  rbindlist(new_ads, fill = TRUE) %>% 
+    write.csv(
+      file = paste0("scraped_", names(configuration$willhaben$pages)[state],"_", Sys.Date(), ".csv"),
+      row.names = FALSE,
+      fileEncoding = 'UTF-8'
+    )
+  
+  # write the old and new scraped ads combined into a file
+  rbindlist(new_ads, fill = TRUE) %>%
+    rbind(result, fill = TRUE) %>%
+    write.csv(
+      file = file_name,
+      row.names = FALSE,
+      fileEncoding = 'UTF-8'
+    )
+  
 }
 
-# write those ads which were scraped during an update into a separate file
-# which has a date in its name: scraped_YYYY_MM_DD.csv
-rbindlist(new_ads, fill = TRUE) %>% 
-  write.csv(
-    file = paste0("scraped_", Sys.Date(), ".csv"),
-    row.names = FALSE,
-    fileEncoding = 'UTF-8'
-  )
-
-# write the old and new scraped ads combined into a file
-rbindlist(new_ads, fill = TRUE) %>%
-  rbind(result, fill = TRUE) %>%
-  write.csv(
-    file = configuration$config$scrapfile,
-    row.names = FALSE,
-    fileEncoding = 'UTF-8'
-  )
