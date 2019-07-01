@@ -1,6 +1,10 @@
 {
-	"willhaben": {
-		"pages": [
+	"willhaben": 
+	{
+		"pages": 
+		{
+			"Wien": 
+			[
 			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1010-innere-stadt/?rows=100",
 			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1020-leopoldstadt/?rows=100",
 			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1030-landstrasse/?rows=100",
@@ -24,7 +28,14 @@
 			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1210-floridsdorf/?rows=100",
 			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1220-donaustadt/?rows=100",
 			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/wien/wien-1230-liesing/?rows=100"
-		]
+			],
+			"Noe":
+			[
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/niederoesterreich/korneuburg/?rows=100",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/niederoesterreich/sankt-poelten/?rows=100",
+			"https://www.willhaben.at/iad/immobilien/eigentumswohnung/niederoesterreich/tulln/?rows=100"
+			]
+		}
 	},
 	"config": {
 		"scrapfile": "flats.csv"
