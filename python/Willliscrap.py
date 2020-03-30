@@ -12,7 +12,10 @@ import urllib
 import time
 import os
 import datetime
+import random
+
 import pandas as pd
+
 from bs4 import BeautifulSoup
 
 
@@ -68,20 +71,20 @@ if os.path.isfile(data['config']['scrapfile']):
     results = pd.read_csv(data['config']['scrapfile'])
 else:
     results = pd.DataFrame(columns=['link'])
-print('Config finished:', time.time()-time_start)
+print('Config + previous results fetched:', time.time()-time_start)
 
 addsFetched = 0
 for district in [item for sublist in data['willhaben']['pages'].values() for item in sublist]:
     links = getAddUrls(district)
+    print(f'Fetched district: {district}')
     for link in links:
-        if results['link'].str.contains(link, regex=False).any(): # skip already present adds
+        if results['link'].str.contains(link, regex=False).any():  # skip already present adds
             continue
         print(link)
+        time.sleep(random.random()*3)
         add = fetchAdd(link)
         results = results.append(add, sort=False)
         addsFetched += 1
 
-
+results.to_csv(data['config']['scrapfile'])
 print(addsFetched, ' adds finished:', time.time()-time_start)
-
-
