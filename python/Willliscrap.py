@@ -86,5 +86,5 @@ for district in [item for sublist in data['willhaben']['pages'].values() for ite
         results = results.append(add, sort=False)
         addsFetched += 1
 
-results.to_csv(data['config']['scrapfile'])
+results.to_csv(data['config']['scrapfile'], index=False)
 print(addsFetched, ' adds finished:', time.time()-time_start)
